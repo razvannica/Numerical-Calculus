@@ -1,6 +1,8 @@
+from math import ceil, log
+
 def computeP(A, B):
     P1 = (A[0][0] + A[1][1]) * (B[0][0] + B[1][1])
-    P2 = (A[1][0] + A[1][0]) * B[0][0]
+    P2 = (A[1][0] + A[1][1]) * B[0][0]
     P3 = A[0][0] * (B[0][1] - B[1][1])
     P4 = A[1][1] * (B[1][0] - B[0][0])
     P5 = (A[0][0] + A[0][1]) * B[1][1]
@@ -18,14 +20,57 @@ def computeP(A, B):
     return C
 
 
-def normalizeMatrix(matrix=list()):
-    size = matrix.count()
-    upper_bound = 1
-    while upper_bound < size / 2:
-        upper_bound *= 2
-
+def normalizeMatrix(matrix, upper_bound):
+    size = len(matrix)
+    for i in range(0, len(matrix)):
+        matrix[i].append(0)
     for i in range(size, upper_bound):
-        matrix.append(0)
+        matrix.append(list(0 for j in range(0, upper_bound)))
+    return matrix
 
-# test commit
-# test commit 2
+
+def strassen(A, B):
+    size = len(A)
+    C = []
+
+    nextPowerOfTwo = lambda n: 2 ** int(ceil(log(n, 2)))
+
+    if size < nextPowerOfTwo(size):
+        A = normalizeMatrix(A, nextPowerOfTwo(size))
+        B = normalizeMatrix(B, nextPowerOfTwo(size))
+
+    line1 = 0
+    line2 = 1
+
+    while line2 < len(A):
+        auxC = []
+        for i in range(0, len(A) - 1, 2):
+            auxC = computeP([
+                [A[line1][i], A[line1][i + 1]],
+                [A[line2][i], A[line2][i + 1]]
+            ],
+            [
+                [B[line1][i], B[line1][i + 1]],
+                [B[line2][i], B[line2][i + 1]]
+            ]
+            )
+            if i == 0:
+                C.append(auxC[0])
+                C.append(auxC[1])
+            else:
+                C[line1] += auxC[0]
+                C[line2] += auxC[1]
+
+        line1 += 2
+        line2 += 2
+    return C
+
+
+matrix = [[1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9]]
+matrix2 = [[9, 8, 7],
+           [6, 5, 4],
+           [3, 2, 1]]
+
+print(strassen(matrix, matrix2))
