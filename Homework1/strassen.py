@@ -28,3 +28,4 @@ def normalizeMatrix(matrix=list()):
         matrix.append(0)
 
 # test commit
+# test commit 2
