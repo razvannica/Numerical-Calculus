@@ -27,3 +27,4 @@ def normalizeMatrix(matrix=list()):
     for i in range(size, upper_bound):
         matrix.append(0)
 
+# test commit
