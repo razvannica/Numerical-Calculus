@@ -9,7 +9,6 @@ def ex1():
             assert (u / 10), output
             u = u / 10
             if 1 + u != 1:
-                #    print("The number is: ", u)
                 output = u
 
     except Exception as e:
@@ -25,7 +24,10 @@ def ex2_a():
     sum1 = (x + y) + z
     sum2 = x + (y + z)
 
-    return sum1 == sum2
+    if sum1 == sum2:
+        print("Addition is associative")
+    print("Addition is not associative")
+
 
 
 def ex2_b():
@@ -44,3 +46,7 @@ def ex2_b():
     print("Multiplication not associative for x = ", x, "and y,z = ", y)
 
     return x
+
+ex1()
+ex2_a()
+ex2_b()
