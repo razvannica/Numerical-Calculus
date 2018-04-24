@@ -7,11 +7,11 @@ import read_from_file
 import h4
 import numpy
 
-n1, b1, A1 = read_from_file.read_file("m_rar_2018_1.txt", True)
-n2, b2, A2 = read_from_file.read_file("m_rar_2018_2.txt", True)
-n3, b3, A3 = read_from_file.read_file("m_rar_2018_3.txt", True)
-n4, b4, A4 = read_from_file.read_file("m_rar_2018_4.txt", True)
-n5, b5, A5 = read_from_file.read_file("m_rar_2018_5.txt", True)
+n1, b1, A1 = read_from_file.read_file("data/m_rar_2018_1.txt", True)
+n2, b2, A2 = read_from_file.read_file("data/m_rar_2018_2.txt", True)
+n3, b3, A3 = read_from_file.read_file("data/m_rar_2018_3.txt", True)
+n4, b4, A4 = read_from_file.read_file("data/m_rar_2018_4.txt", True)
+n5, b5, A5 = read_from_file.read_file("data/m_rar_2018_5.txt", True)
 EPS = 0.00001
 
 m_rar = [
