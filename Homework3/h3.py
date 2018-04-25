@@ -63,9 +63,9 @@ def product_with_array(A, size):
     for index in range(0, size):
         sum = 0
 
-        for A_line in A[index]:
-            val_x = x[A_line[1]]
-            sum += A_line[0] * val_x
+        for A_line_element in A[index]:
+            val_x = x[A_line_element[1]]
+            sum += A_line_element[0] * val_x
 
         C.append(sum)
     return C

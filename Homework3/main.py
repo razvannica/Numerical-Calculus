@@ -44,22 +44,22 @@ def list_cmp(generated, read, n, EPS):
 
 n, a, A = read_from_file.read_file("data/a.txt", True)
 n2, b, B = read_from_file.read_file("data/b.txt", True)
-n3, csumfromtxt, Csumfromtxt = read_from_file.read_file("data/aplusb.txt", False)
-n4, cprodfromtxt, Cprodfromtxt = read_from_file.read_file("data/aorib.txt", False)
+n3, aplusb_input, AplusB_input = read_from_file.read_file("data/aplusb.txt", False)
+n4, aorib_input, AoriB_input = read_from_file.read_file("data/aorib.txt", False)
 
 """
     Generating the sum and the product of the matrices
 """
-Csum = h3.matrix_sum(A, B, n)
-Cprod = h3.matrix_product(A, B, n)
+AplusB_generated = h3.matrix_sum(A, B, n)
+AoriB_generated = h3.matrix_product(A, B, n)
 
 """
     Generating the results
 """
 a_generated = h3.product_with_array(A, n)
 b_generated = h3.product_with_array(B, n)
-sum_generated = h3.product_with_array(Csumfromtxt, n)
-prod_generated = h3.product_with_array(Cprodfromtxt, n)
+sum_generated = h3.product_with_array(AplusB_input, n)
+prod_generated = h3.product_with_array(AoriB_input, n)
 
 """
     Print the outputs
@@ -74,22 +74,22 @@ if list_cmp(b_generated, b, n, 0.00001):
 else:
     print("Generated list 'B*x' != input list 'B*x'")
 
-if list_cmp(sum_generated, csumfromtxt, n, 0.00001):
-    print("Generated list 'a+b' = input list 'a+b'")
+if list_cmp(sum_generated, aplusb_input, n, 0.00001):
+    print("Generated list '(A+B)*x' = input list '(A+B)*x'")
 else:
-    print("Generated list 'a+b' != input list 'a+b'")
+    print("Generated list '(A+B)*x' != input list '(A+B)*x'")
 
-if list_cmp(prod_generated, cprodfromtxt, n, 0.00001):
-    print("Generated list 'a*b' = input list 'a*b'")
+if list_cmp(prod_generated, aorib_input, n, 0.00001):
+    print("Generated list '(A*B)*x' = input list '(A*B)*x'")
 else:
-    print("Generated list 'a*b' != input list 'a*b'")
+    print("Generated list '(A*B)*x' != input list '(A*B)*x'")
 
-if matrix_cmp(Csum, Csumfromtxt, n, 0.0001):
+if matrix_cmp(AplusB_generated, AplusB_input, n, 0.0001):
     print("Generated matrix 'A+B' = input matrix 'A+B'")
 else:
     print("Generated matrix 'A+B' != input matrix 'A+B'")
 
-if matrix_cmp(Cprod, Cprodfromtxt, n, 0.0001):
+if matrix_cmp(AoriB_generated, AoriB_input, n, 0.0001):
     print("Generated matrix 'A*B' = input matrix 'A*B'")
 else:
     print("Generated matrix 'A*B' != input matrix 'A*B'")
