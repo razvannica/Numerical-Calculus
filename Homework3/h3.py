@@ -55,6 +55,11 @@ def matrix_product(A, B, n):
 def product_with_array(A, size):
     C = []
     x = [value for value in range(size, 0, -1)]
+    # x = []
+    # for i in range(size, 0, -1):
+    #     x.append([[i, 0]])
+    #
+    # return matrix_product(A, x, size)
     for index in range(0, size):
         sum = 0
 

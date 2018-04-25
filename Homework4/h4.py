@@ -46,7 +46,7 @@ def gauss_seidel(A, b, n, EPS):
     xc = [0 for i in range(0, n)]
     xp = [0 for i in range(0, n)]
     k = 0
-    # do start
+
     xc = compute_xc(xc, xp, b, A, n)
     delta_x = norm(
         numpy.subtract(numpy.array(xc), numpy.array(xp)), n

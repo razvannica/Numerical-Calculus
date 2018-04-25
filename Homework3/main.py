@@ -65,14 +65,14 @@ prod_generated = h3.product_with_array(Cprodfromtxt, n)
     Print the outputs
 """
 if list_cmp(a_generated, a, n, 0.00001):
-    print("Generated list 'a' = input list 'a'")
+    print("Generated list 'A*x' = input list 'A*x'")
 else:
-    print("Generated list 'a' != input list 'a'")
+    print("Generated list 'A*x' = input list 'A*x'")
 
 if list_cmp(b_generated, b, n, 0.00001):
-    print("Generated list 'b' = input list 'b'")
+    print("Generated list 'B*x' = input list 'B*x'")
 else:
-    print("Generated list 'b' != input list 'b'")
+    print("Generated list 'B*x' != input list 'B*x'")
 
 if list_cmp(sum_generated, csumfromtxt, n, 0.00001):
     print("Generated list 'a+b' = input list 'a+b'")
