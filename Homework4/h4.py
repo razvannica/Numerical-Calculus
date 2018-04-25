@@ -42,7 +42,7 @@ def compute_xc(xkplus1, xk, b, A, n):
     return xkplus1
 
 
-def gauss(A, b, n, EPS):
+def gauss_siedel(A, b, n, EPS):
     xc = [0 for i in range(0, n)]
     xp = [0 for i in range(0, n)]
     k = 0

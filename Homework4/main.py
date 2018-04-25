@@ -7,31 +7,23 @@ import read_from_file
 import h4
 import numpy
 
-n1, b1, A1 = read_from_file.read_file("data/m_rar_2018_1.txt", True)
-n2, b2, A2 = read_from_file.read_file("data/m_rar_2018_2.txt", True)
-n3, b3, A3 = read_from_file.read_file("data/m_rar_2018_3.txt", True)
-n4, b4, A4 = read_from_file.read_file("data/m_rar_2018_4.txt", True)
-n5, b5, A5 = read_from_file.read_file("data/m_rar_2018_5.txt", True)
+# size1, b1, A1 = read_from_file.read_file("data/m_rar_2018_1.txt", True)
+# size2, b2, A2 = read_from_file.read_file("data/m_rar_2018_2.txt", True)
+# size3, b3, A3 = read_from_file.read_file("data/m_rar_2018_3.txt", True)
+# size4, b4, A4 = read_from_file.read_file("data/m_rar_2018_4.txt", True)
+# size5, b5, A5 = read_from_file.read_file("data/m_rar_2018_5.txt", True)
 EPS = 0.00001
 
-m_rar = [
-    [n1, b1, A1],
-    [n2, b2, A2],
-    [n3, b3, A3],
-    [n4, b4, A4],
-    [n5, b5, A5]
-]
-
-index = 1
-for case in m_rar:
-    if h4.main_diagonal_validation(case[2], case[0], EPS):
-        iter1, xg1 = h4.gauss(case[2], case[1], case[0], EPS)
+for index in range(0, 5):
+    print("Matrix " + str(index + 1) + ":")
+    size, b, A = read_from_file.read_file("data/m_rar_2018_"+str(index+1)+".txt", True)
+    if h4.main_diagonal_validation(A, size, EPS):
+        iter1, xg1 = h4.gauss_siedel(A, b, size, EPS)
         if iter1:
-            print("Matrix" + str(index) + ":")
-            print("Iterations" + str(iter1), xg1[:6])
-            print("Inducted matrix norm" + str(
-                max(abs(i) for i in numpy.subtract(h4.product_with_array(case[2], xg1, n1), case[1]))))
+            print("\tIterations: " + str(iter1), xg1[:6])
+            print("\tInducted matrix norm: " + str(
+                max(abs(i) for i in numpy.subtract(h4.product_with_array(A, xg1, size), b))))
         else:
-            print("Matrix " + str(index) + " is disjoint")
+            print("\tMatrix " + str(index+1) + " is disjoint")
     else:
-        print("Values are null on main diagonal of matrix " + str(index))
+        print("\tValues are null on main diagonal of matrix " + str(index+1))
