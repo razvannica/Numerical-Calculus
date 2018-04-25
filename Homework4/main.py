@@ -17,7 +17,7 @@ for index in range(0, 5):
     size, b, A = read_from_file.read_file("data/m_rar_2018_" + str(index + 1) + ".txt", True)
 
     if h4.main_diagonal_validation(A, size):
-        """ Searching for solutions with gauss_siedel """
+        """ Searching for solutions with gauss_seidel """
         t0 = time.time()
         iterations, xgs = h4.gauss_seidel(A, b, size, EPS)
         t1 = time.time()
