@@ -7,11 +7,6 @@ import read_from_file
 import h4
 import numpy
 
-# size1, b1, A1 = read_from_file.read_file("data/m_rar_2018_1.txt", True)
-# size2, b2, A2 = read_from_file.read_file("data/m_rar_2018_2.txt", True)
-# size3, b3, A3 = read_from_file.read_file("data/m_rar_2018_3.txt", True)
-# size4, b4, A4 = read_from_file.read_file("data/m_rar_2018_4.txt", True)
-# size5, b5, A5 = read_from_file.read_file("data/m_rar_2018_5.txt", True)
 EPS = 0.00001
 
 for index in range(0, 5):

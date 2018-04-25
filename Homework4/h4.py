@@ -8,7 +8,7 @@ import copy
 
 
 def norm(a_list, n):
-    return (sum([(abs(a_list[i])) ** 2 for i in range(0, n)])) ** (0.5)
+    return (sum([(abs(a_list[i])) ** 2 for i in range(0, n)])) ** 0.5
 
 
 def main_diagonal_validation(A, n, EPS):
@@ -46,23 +46,22 @@ def gauss_siedel(A, b, n, EPS):
     xc = [0 for i in range(0, n)]
     xp = [0 for i in range(0, n)]
     k = 0
-    kmax = 10000
     # do start
     xc = compute_xc(xc, xp, b, A, n)
-    xcnumpy = numpy.array(xc)
-    xpnumpy = numpy.array(xp)
-    deltax = norm(numpy.subtract(xcnumpy, xpnumpy), n)
+    delta_x = norm(
+        numpy.subtract(numpy.array(xc), numpy.array(xp)), n
+    )
     k += 1
 
-    while deltax >= EPS and k <= kmax and deltax <= 10 ** 8:
+    while EPS <= delta_x <= 10 ** 8 and k <= 10000:
         xp = copy.copy(xc)
         xc = compute_xc(xc, xp, b, A, n)
-        xcnumpy = numpy.array(xc)
-        xpnumpy = numpy.array(xp)
-        deltax = norm(numpy.subtract(xcnumpy, xpnumpy), n)
+        delta_x = norm(
+            numpy.subtract(numpy.array(xc), numpy.array(xp)), n
+        )
         k += 1
 
-    if deltax < EPS:
+    if delta_x < EPS:
         return k, xc
     else:
         return 0, 0
