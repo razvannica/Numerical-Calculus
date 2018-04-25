@@ -54,13 +54,13 @@ def matrix_product(A, B, n):
 
 def product_with_array(A, size):
     C = []
-    value_list = [value for value in range(size, 0, -1)]
+    x = [value for value in range(size, 0, -1)]
     for index in range(0, size):
         sum = 0
 
-        for A_list in A[index]:
-            val_x = value_list[A_list[1]]
-            sum += A_list[0] * val_x
+        for A_line in A[index]:
+            val_x = x[A_line[1]]
+            sum += A_line[0] * val_x
 
         C.append(sum)
     return C
