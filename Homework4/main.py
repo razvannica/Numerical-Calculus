@@ -19,15 +19,16 @@ for index in range(0, 5):
     if h4.main_diagonal_validation(A, size):
         """ Searching for solutions with gauss_siedel """
         t0 = time.time()
-        iterations, xg = h4.gauss_siedel(A, b, size, EPS)
+        iterations, xgs = h4.gauss_seidel(A, b, size, EPS)
         t1 = time.time()
 
         """ Printing the outputs """
         if iterations != 0:
             print("\tNumber of iterations: " + str(iterations))
             print("\tInducted matrix norm: " + str(
-                max(abs(i) for i in numpy.subtract(h4.product_with_array(A, xg, size), b))))
+                max(abs(i) for i in numpy.subtract(h4.product_with_array(A, xgs, size), b))))
             print("\tTime: " + str(t1 - t0))
+            print("\tSolution xi= " + str(xgs[:5]))
         else:
             print("\tMatrix " + str(index + 1) + " is disjoint")
 
