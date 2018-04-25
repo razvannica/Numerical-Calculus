@@ -33,6 +33,7 @@ def list_cmp(generated, read, n, EPS):
     r_sorted = sorted(read)
 
     for i in range(0, n):
+        # if abs(g_sorted[i][0][0] - r_sorted[i]) > EPS:
         if abs(g_sorted[i] - r_sorted[i]) > EPS:
             return False
     return True
