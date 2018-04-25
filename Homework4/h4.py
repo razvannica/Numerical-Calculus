@@ -7,9 +7,9 @@ import numpy
 import copy
 
 
-def main_diagonal_validation(A, n, EPS):
+def main_diagonal_validation(A, n):
     for i in range(0, n):
-        if A[i][len(A[i]) - 1][0] <= EPS:
+        if A[i][len(A[i]) - 1][0] == 0:
             return False
     return True
 
