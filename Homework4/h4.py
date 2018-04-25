@@ -5,6 +5,7 @@ Group: English
 """
 import numpy
 import copy
+import math
 
 
 def main_diagonal_validation(A, n):
@@ -26,7 +27,7 @@ def product_with_array(A, x, n):
 
 
 def norm(a_list, n):
-    return (sum([(abs(a_list[i])) ** 2 for i in range(0, n)])) ** 0.5
+    return numpy.linalg.norm(a_list, numpy.inf)
 
 
 def compute_xc(xkplus1, xk, b, A, n):
@@ -45,23 +46,23 @@ def compute_xc(xkplus1, xk, b, A, n):
 def gauss_seidel(A, b, n, EPS):
     xc = [0 for i in range(0, n)]
     xp = [0 for i in range(0, n)]
-    k = 0
+    iterations = 0
 
     xc = compute_xc(xc, xp, b, A, n)
     delta_x = norm(
         numpy.subtract(numpy.array(xc), numpy.array(xp)), n
     )
-    k += 1
+    iterations += 1
 
-    while EPS <= delta_x <= 10 ** 8 and k <= 10000:
+    while EPS <= delta_x <= 10 ** 8 and iterations <= 10000:
         xp = copy.copy(xc)
         xc = compute_xc(xc, xp, b, A, n)
         delta_x = norm(
             numpy.subtract(numpy.array(xc), numpy.array(xp)), n
         )
-        k += 1
+        iterations += 1
 
     if delta_x < EPS:
-        return k, xc
+        return iterations, xc
     else:
         return 0, 0
