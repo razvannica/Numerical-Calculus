@@ -7,10 +7,6 @@ import numpy
 import copy
 
 
-def norm(a_list, n):
-    return (sum([(abs(a_list[i])) ** 2 for i in range(0, n)])) ** 0.5
-
-
 def main_diagonal_validation(A, n, EPS):
     for i in range(0, n):
         if A[i][len(A[i]) - 1][0] <= EPS:
@@ -27,6 +23,10 @@ def product_with_array(A, x, n):
             sum += A_list[0] * val_x
         C.append(sum)
     return C
+
+
+def norm(a_list, n):
+    return (sum([(abs(a_list[i])) ** 2 for i in range(0, n)])) ** 0.5
 
 
 def compute_xc(xkplus1, xk, b, A, n):
