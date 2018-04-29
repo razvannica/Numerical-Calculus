@@ -7,7 +7,8 @@ import numpy
 import copy
 import time
 
-def read_file(path, is_generated):
+
+def read_file(path, to_check):
     size = 0
     input_list = []
     matrix = []
@@ -29,36 +30,36 @@ def read_file(path, is_generated):
 
             if num > size + 3:
                 line = lines.split(",")
-                nr = float(line[0])
-                index = int(line[1])
-                j = int(line[2])
+                value = float(line[0])
+                index_line = int(line[1])
+                index_col = int(line[2])
 
-                if index == j:
+                if index_line == index_col:
                     ok = 0
-                    for k in matrix[index]:
-                        if len(k) > 1:
-                            if k[1] == j:
-                                k[0] += nr
+                    for matrix_line in matrix[index_line]:
+                        if len(matrix_line) > 1:
+                            if matrix_line[1] == index_col:
+                                matrix_line[0] += value
                                 ok = 1
                                 break
                     if ok == 0:
-                        matrix[index].append(list((nr, j)))
+                        matrix[index_line].append(list((value, index_col)))
                 else:
                     ok = 0
-                    for k in matrix[index]:
-                        if len(k) > 1:
-                            if k[1] == j:
-                                k[0] += nr
+                    for matrix_line in matrix[index_line]:
+                        if len(matrix_line) > 1:
+                            if matrix_line[1] == index_col:
+                                matrix_line[0] += value
                                 ok = 1
                                 break
                     if ok == 0:
-                        matrix[index].insert(0, list((nr, j)))
+                        matrix[index_line].insert(0, list((value, index_col)))
 
-    if is_generated:
-        for index in range(0, size):
-            if len(matrix[index]) > 10:
-                print(matrix[index])
-                raise ValueError("The matrix has more than 10 inputs into line " + str(index))
+    if to_check:
+        for index_line in range(0, size):
+            if len(matrix[index_line]) > 10:
+                print(matrix[index_line])
+                raise ValueError("The matrix has more than 10 inputs into line " + str(index_line))
     return size, input_list, matrix
 
 
