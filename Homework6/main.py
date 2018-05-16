@@ -200,7 +200,9 @@ if __name__ == "__main__":
     matrix = sparse_to_normal(generated)
     U, s, V = numpy.linalg.svd(matrix)
 
-    print('Singular values of the matrix: {}'.format([val for val in s]))
+    print("\n\n ------------- p>n -------------------")
+
+    print('\nSingular values of the matrix: {}'.format([val for val in s]))
     print('Number of singular values for decomposition (rank): {}'.format(len(s)))
     print('Matrix rank: {}'.format(numpy.linalg.matrix_rank(matrix)))
 
