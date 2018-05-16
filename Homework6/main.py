@@ -170,17 +170,17 @@ def generate_random_sparse_symmetric_matrix(size):
 
 
 if __name__ == "__main__":
-    print("Reading m_rar")
+    print("Reading m_rar_sim_2018.")
     size, A = read_file("data/m_rar_sim_2018.txt", False)
     EPS = 0.00001
 
-    generated = generate_random_sparse_symmetric_matrix(30)
-
     print("Computing with pow method for m_rar_sim:")
-
     _lambda1, v1 = pow_method(A, EPS)
     print("lambda:\t", _lambda1)
     print("v:\t", v1)
+
+    print("Generating random sparse symmetric matrix.")
+    generated = generate_random_sparse_symmetric_matrix(30)
 
     print("\nComputing with pow method for generated sparse symmetric matrix:")
     _lambda2, v2 = pow_method(generated, EPS)
