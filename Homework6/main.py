@@ -148,12 +148,13 @@ def check_empty_list_sparse(_list):
             return False
     return True
 
+
 def generate_random_sparse_symmetric_matrix(size):
     from random import gauss, randint
 
     sparse = [[] for i in range(size)]
-    for _ in range(size*size):
-        (i, j) = (randint(0, size-1), randint(0, size-1))
+    for _ in range(size * size):
+        (i, j) = (randint(0, size - 1), randint(0, size - 1))
         x = gauss(0, 1)
         if not check_empty_list_sparse(sparse):
             if i != j:
@@ -168,6 +169,16 @@ def generate_random_sparse_symmetric_matrix(size):
     return sparse
 
 
+def sparse_to_normal(sparse):
+    to_return = [[0 for i in range(len(sparse))] for j in range(len(sparse))]
+
+    for i in range(len(sparse)):
+        for element in sparse[i]:
+            to_return[i][element[1]] = element[0]
+
+    return to_return
+
+
 if __name__ == "__main__":
     print("Reading m_rar_sim_2018.")
     size, A = read_file("data/m_rar_sim_2018.txt", False)
@@ -179,10 +190,43 @@ if __name__ == "__main__":
     print("\tv:\t", v1)
 
     print("\nGenerating random sparse symmetric matrix.")
-    generated = generate_random_sparse_symmetric_matrix(30)
+    generated = generate_random_sparse_symmetric_matrix(5)
 
     print("\nComputing with pow method for generated sparse symmetric matrix:")
     _lambda2, v2 = pow_method(generated, EPS)
     print("\tlambda:\t", _lambda2)
     print("\tv:\t", v2)
 
+    matrix = sparse_to_normal(generated)
+    U, s, V = numpy.linalg.svd(matrix)
+
+    print('Singular values of the matrix: {}'.format([val for val in s]))
+    print('Number of singular values for decomposition (rank): {}'.format(len(s)))
+    print('Matrix rank: {}'.format(numpy.linalg.matrix_rank(matrix)))
+
+    singular_vals = [val for val in s if val > 0]
+    print('Condition number of matrix: {}'.format(max(singular_vals) / min(singular_vals)))
+    print('Numpy condition number: {0}'.format(numpy.linalg.cond(matrix)))
+
+    B = numpy.linalg.pinv(matrix)
+    print("Moore-Penrose for the matrix: \n{0}".format(B))
+
+    b = numpy.random.random(5)
+    x = numpy.dot(B, b)
+    # The solution is the Moore-Penrose pseudoinverse, multiplied by b
+    print("Solution to Ax = b: {0}".format(x))
+
+    s_val = int(input('s = '))
+    while s_val > numpy.linalg.matrix_rank(matrix):
+        print("s should be <= than ", numpy.linalg.matrix_rank(matrix))
+        s_val = int(input('s = '))
+
+    A_s = numpy.zeros(numpy.array(matrix).shape)
+    for i in range(s_val):
+        col_u = U[:, i]
+        col_v = V[:, i]
+        A_s += s[i] * numpy.dot(col_u.reshape(len(col_u), 1), col_v.reshape(1, len(col_v)))
+
+    print("Value of matrix A_s: \n")
+    print(A_s)
+    print('Norm: {}'.format(numpy.linalg.norm(matrix - A_s, numpy.inf)))
