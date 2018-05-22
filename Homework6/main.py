@@ -153,18 +153,18 @@ def generate_random_sparse_symmetric_matrix(size):
     from random import gauss, randint
 
     sparse = [[] for i in range(size)]
-    for _ in range(size * size):
+    for _ in range(size):
         (i, j) = (randint(0, size - 1), randint(0, size - 1))
         x = gauss(0, 1)
-        if not check_empty_list_sparse(sparse):
-            if i != j:
-                sparse[i].insert(0, [x, j])
-                sparse[j].insert(0, [x, i])
-            else:
-                sparse[i].append([x, j])
-                sparse[j].append([x, i])
+        # if not check_empty_list_sparse(sparse):
+        if i != j:
+            sparse[i].insert(0, [x, j])
+            sparse[j].insert(0, [x, i])
         else:
-            break
+            sparse[i].append([x, j])
+            sparse[j].append([x, i])
+        # else:
+        #     break
 
     return sparse
 
@@ -189,13 +189,13 @@ if __name__ == "__main__":
     print("\tlambda:\t", _lambda1)
     print("\tv:\t", v1)
 
-    print("\nGenerating random sparse symmetric matrix.")
+    # print("\nGenerating random sparse symmetric matrix.")
     generated = generate_random_sparse_symmetric_matrix(5)
-
-    print("\nComputing with pow method for generated sparse symmetric matrix:")
-    _lambda2, v2 = pow_method(generated, EPS)
-    print("\tlambda:\t", _lambda2)
-    print("\tv:\t", v2)
+    #
+    # print("\nComputing with pow method for generated sparse symmetric matrix:")
+    # _lambda2, v2 = pow_method(generated, EPS)
+    # print("\tlambda:\t", _lambda2)
+    # print("\tv:\t", v2)
 
     matrix = sparse_to_normal(generated)
     U, s, V = numpy.linalg.svd(matrix)
