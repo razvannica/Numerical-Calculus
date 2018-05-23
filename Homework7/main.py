@@ -5,7 +5,6 @@ Group: English
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 def read_from_file(file_path):
@@ -59,7 +58,6 @@ def progressive_newton(values, n, x0, xn, x):
     t = (x - x0) / h
     """ Start computing L """
     y = [0] * (n)
-    y = [0] * (n)
     s = [0] * (n)
     y[0] = values[x0]
     s[0] = 1
@@ -67,77 +65,60 @@ def progressive_newton(values, n, x0, xn, x):
     L = 0
 
     """ First step """
-    for counter in range(1, n):
-        y[counter] = values[list(values.keys())[counter + 1]] - values[list(values.keys())[counter]]
+    for index in range(1, n):
+        y[index] = values[list(values.keys())[index + 1]] - values[list(values.keys())[index]]
 
     """ Following steps """
-    for pas in range(2, n):
-        s[pas] = s[pas - 1] * (t - pas + 1) / pas
+    for step in range(2, n):
+        s[step] = s[step - 1] * (t - step + 1) / step
 
-        z = [0] * (n - pas)
-        for counter in range(0, n - pas):
-            z[counter] = y[pas + counter] - y[pas + counter - 1]
-        for counter in range(0, n - pas):
-            y[pas + counter] = z[counter]
+        z = [0] * (n - step)
+        for index in range(0, n - step):
+            z[index] = y[step + index] - y[step + index - 1]
+        for index in range(0, n - step):
+            y[step + index] = z[index]
 
     """ Compute L """
-    for counter in range(0, n):
-        L += s[counter] * y[counter]
+    for index in range(0, n):
+        L += s[index] * y[index]
 
     return True, L
 
 
-def interpol_smallest_squares(values, n, x0, xn, x):
-    result = 0
-    if xn < x0:
-        return False, None
-    h = (xn - x0) / (n - 1)
-    """ Determine the interpolation points """
-    x_interpol = [0] * (n)
-    x_interpol[0] = x0
-    for i in range(1, n):
-        x_interpol[i] = x0 + i * h
-    # Construct the polynom: I will have something like: S(x) = a1*pow(x, 4) + a2*pow(x,3) + a3*pow(x,2) + a4*pow(x,1) + a5
-    # Construct the coefficient matrix
-    # For each of the interpolation values
-    coeff_matrix = np.empty([n, n])
-    result_array = np.empty(n)
-    for line_index in range(0, 5):
-        for col_index in range(0, 5):
-            coeff_matrix[line_index][col_index] = pow(x_interpol[line_index], 4 - col_index)
-        result_array[line_index] = values[x_interpol[line_index]]
-
-    # Determine the a coefficient array
-    a = np.linalg.solve(coeff_matrix, result_array)
-    # Determine the value in the point based on Horner's scheme
-    d = np.empty(n)
-    d[0] = a[0]
-    for i in range(1, n):
-        d[i] = a[i] + d[i - 1] * x
-
-    result = d[n - 1]
-    return True, result
-
-
-def func(x, values):
-    val = []
-    for x in x:
-        val.append(values[x])
-    return val
-
-
-def newton(x, values, n, x0, xn):
-    val = []
-    for x in x:
-        val.append(progressive_newton(values, n, x0, xn, x)[1])
-    return val
-
-
-def least_squares(x, values, n, x0, xn):
-    val = []
-    for x in x:
-        val.append(interpol_smallest_squares(values, n, x0, xn, x)[1])
-    return val
+# def interpol_smallest_squares(values, n, x0, xn, x):
+#     if xn < x0:
+#         return False, None
+#
+#     h = (xn - x0) / (n - 1)
+#
+#     """ Determine the interpolation points """
+#     x_interpol = [0] * (n)
+#     x_interpol[0] = x0
+#
+#     for i in range(1, n):
+#         x_interpol[i] = x0 + i * h
+#
+#     # Construct the polynome something like: S(x) = a1*pow(x, 4) + a2*pow(x,3) + a3*pow(x,2) + a4*pow(x,1) + a5
+#     # Construct the coefficient matrix
+#     # For each of the interpolation values
+#     coeff_matrix = np.empty([n, n])
+#     result_array = np.empty(n)
+#     for line_index in range(0, 5):
+#         for col_index in range(0, 5):
+#             coeff_matrix[line_index][col_index] = pow(x_interpol[line_index], 4 - col_index)
+#         result_array[line_index] = values[x_interpol[line_index]]
+#
+#     # Determine the a coefficient array
+#     a = np.linalg.solve(coeff_matrix, result_array)
+#     # Determine the value in the point based on Horner's scheme
+#     d = np.empty(n)
+#     d[0] = a[0]
+#
+#     for i in range(1, n):
+#         d[i] = a[i] + d[i - 1] * x
+#
+#     result = d[n - 1]
+#     return True, result
 
 
 if __name__ == '__main__':
@@ -146,20 +127,8 @@ if __name__ == '__main__':
         check, result = progressive_newton(values, n, x0, xn, x)
         if check:
             print("Result with progressive Newton: {0}".format(result))
-        check, result = interpol_smallest_squares(values, n, x0, xn, x)
-        if check:
-            print("Result with least squares interpolation: {0}".format(result))
+        # check, result = interpol_smallest_squares(values, n, x0, xn, x)
+        # if check:
+        #     print("Result with least squares interpolation: {0}".format(result))
     else:
         print("Couldn't find result!")
-
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    precision = 50
-    x = [1, 2, 3, 4, 5]
-    ax.plot(x, func(x, values), color='g', label='Original', alpha=.3)
-    x = np.arange(1, 100, 0.5)
-    ax.plot(x, newton(x, values, n, x0, xn), color='b', label='Progressive Newton', alpha=.3)
-    ax.plot(x, least_squares(x, values, n, x0, xn), color='r', label='Least Squares Interpol', alpha=.3)
-    ax.legend(fancybox=True)
-    plt.show()
-
