@@ -189,13 +189,13 @@ if __name__ == "__main__":
     print("\tlambda:\t", _lambda1)
     print("\tv:\t", v1)
 
-    # print("\nGenerating random sparse symmetric matrix.")
+    print("\nGenerating random sparse symmetric matrix.")
     generated = generate_random_sparse_symmetric_matrix(5)
-    #
-    # print("\nComputing with pow method for generated sparse symmetric matrix:")
-    # _lambda2, v2 = pow_method(generated, EPS)
-    # print("\tlambda:\t", _lambda2)
-    # print("\tv:\t", v2)
+
+    print("\nComputing with pow method for generated sparse symmetric matrix:")
+    _lambda2, v2 = pow_method(generated, EPS)
+    print("\tlambda:\t", _lambda2)
+    print("\tv:\t", v2)
 
     matrix = sparse_to_normal(generated)
     U, s, V = numpy.linalg.svd(matrix)
@@ -208,14 +208,12 @@ if __name__ == "__main__":
 
     singular_vals = [val for val in s if val > 0]
     print('Condition number of matrix: {}'.format(max(singular_vals) / min(singular_vals)))
-    print('Numpy condition number: {0}'.format(numpy.linalg.cond(matrix)))
 
     B = numpy.linalg.pinv(matrix)
     print("Moore-Penrose for the matrix: \n{0}".format(B))
 
     b = numpy.random.random(5)
     x = numpy.dot(B, b)
-    # The solution is the Moore-Penrose pseudoinverse, multiplied by b
     print("Solution to Ax = b: {0}".format(x))
 
     s_val = int(input('s = '))
@@ -229,6 +227,6 @@ if __name__ == "__main__":
         col_v = V[:, i]
         A_s += s[i] * numpy.dot(col_u.reshape(len(col_u), 1), col_v.reshape(1, len(col_v)))
 
-    print("Value of matrix A_s: \n")
+    print("Matrix A_s: \n")
     print(A_s)
     print('Norm: {}'.format(numpy.linalg.norm(matrix - A_s, numpy.inf)))
