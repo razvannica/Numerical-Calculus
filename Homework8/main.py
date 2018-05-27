@@ -4,81 +4,46 @@ Study Year: 3
 Group: English
 """
 import math
-import numpy
 
-sol = []
-
-epsilon = pow(10, -9)
 h = pow(10, -3)
 kmax = 10000
-polyn = [2, 2, -1]
+polynome = [1, -6, 13, -12, 4]
 
 
 def f(x):
     return x ** 2 - 4 * x + 3
 
 
-# def f_2(x):
-#     return x ** 2 + numpy.exp(x)
-
-
-# def f_1(x):
-#     return x ** 4 - 6 * x ** 3 + 13 * x ** 2 - 12 * x + 4
-
-
-def deriv1(x):
+def derivative(x):
     return (3 * f(x) - 4 * f(x - h) + f(x - 2 * h)) / (2 * h)
 
 
-# def deriv2(x):
-#     return (-f(x + 2 * h) + 8 * f(x + h) - 8 * f(x - h) + f(x - 2 * h)) / (12 * h)
-
-
-# def der_ord2(x):
-#     return -f(x + 2 * h) + 16 * f(x + h) - 30 * f(x) + 16 * f(x - h) - f(x - 2 * h) / (12 * h ** 2)
-
-
-def secant(x0, x1):
+def secant(x0, x1, EPS):
     for k in range(kmax):
-        nominator = (x1 - x0) * deriv1(x1)
-        denominator = deriv1(x1) - deriv1(x0)
-        if math.fabs(denominator) < epsilon:
+        nominator = (x1 - x0) * derivative(x1)
+        denominator = derivative(x1) - derivative(x0)
+
+        if math.fabs(denominator) < EPS:
             dx = pow(10, -5)
         else:
             dx = nominator / denominator
         x1 = x1 - dx
 
         if k > kmax:
-            print("Divergenta la iteratia: {0}\n".format(k))
-            return None
+            raise Exception("Divergenta la iteratia: {0}\n".format(k))
         elif math.fabs(dx) > pow(10, 8):
-            print("Explozie!\n")
-            return None
-        if math.fabs(dx) < epsilon:
+            raise Exception("abs(dx) > 10^8!\n")
+        if math.fabs(dx) < EPS:
             return x1
 
 
-def poly_to_string(p, fd):
-    toprint = []
-    for i, coef in enumerate(p, 1):
-        if coef == 0:
-            continue
-        if coef >= 0 and i != 1:
-            toprint.append(' + ')
-        elif coef < 0:
-            toprint.append(' - ')
-        toprint.append(str(numpy.abs(coef)))
-        if i != len(p):
-            toprint.append('x^' + str(len(p) - i))
-
-    pstring = 'Polynomial: {0}'.format(''.join(toprint))
-    fd.write(pstring + "\n")
-    print(pstring)
-    return True
-
-
-def muller(x0, x1, x2):
+def muller(R, EPS):
     k = 3
+    sol = []
+    import random
+    x0 = random.randint(0, R)
+    x1 = random.randint(0, R)
+    x2 = random.randint(0, R)
     while True:
         h0 = x1 - x0
         h1 = x2 - x1
@@ -93,7 +58,7 @@ def muller(x0, x1, x2):
         b = a * h1 + ro_1
         c = horner(x2)
         max_b = max(b + math.sqrt(b ** 2 - 4 * a * c), b - math.sqrt(b ** 2 - 4 * a * c))
-        if max_b < epsilon:
+        if max_b < EPS:
             raise Exception("Values smaller than epsilon!\n")
         delta_x = 2 * c / max_b
         x3 = x2 - delta_x
@@ -101,7 +66,7 @@ def muller(x0, x1, x2):
         x0 = x1
         x1 = x2
         x2 = x3
-        if delta_x < epsilon and x2 not in sol:
+        if delta_x < EPS and x2 not in sol:
             sol.append(x2)
         if k > kmax or delta_x > pow(10, 8):
             break
@@ -111,40 +76,26 @@ def muller(x0, x1, x2):
 
 def horner(x):
     acc = 0
-    for c in reversed(polyn):
+    for c in reversed(polynome):
         acc = acc * x + c
     return acc
 
 
 if __name__ == '__main__':
 
-    with open('output.txt', 'w') as fd:
-        """ Write polynom to file """
-        poly_to_string(polyn, fd)
+    R = (abs(polynome[0]) + max(polynome)) / abs(polynome[0])
+    print('Interval is: [' + str(-R) + ', ' + str(R) + ']')
 
-        """ Determine roots interval """
-        R = (abs(polyn[0]) + max(polyn)) / abs(polyn[0])
-        R_int_str = 'Interval is: [{0}, {1}]'.format(-R, R)
-        print(R_int_str)
-        fd.write(R_int_str + "\n")
+    solutions = muller(R, 0.0000001)
+    print('Found ' + str(len(solutions)) + ' roots')
 
-        """ Determine solutions """
-        sols = muller(0, 1, 2)
-        rstring = 'Found {0} roots'.format(len(sols))
-        print(rstring)
-        fd.write(rstring + '\n')
+    for i, r in enumerate(solutions):
+        print('x' + str(i) + ' = ' + str(r))
 
-        for i, r in enumerate(sols):
-            rstring = 'x{0} = {1}'.format(i, r)
-            print(rstring)
-            fd.write(rstring + '\n')
-        fd.write('\n')
-
-    """" Use secant method to determine local min """
-    print("\nSecant method to determine local minimum:")
+    print("\nLocal minimum:")
     x0 = -0.4
     print("\tx0 = " + str(x0))
     x1 = -0.5
     print("\tx1 = " + str(x1))
-    x = secant(x0, x1)
-    print("\tsecant(x0,x1) = " + str(x))
+    x = secant(x0, x1, 0.0000001)
+    print("\tSecant(x0,x1) = " + str(x))
